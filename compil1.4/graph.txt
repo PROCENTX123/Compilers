@@ -1,0 +1,66 @@
+"""
+digraph G {
+    start -> whitespace[label = "\\s"];
+    start -> digit[label = "\\d"];
+    start -> ident_op_bracket[label = "("];
+    start -> ident_cl_bracket[label = ")"];
+    start -> ident_com_start[label = "{"];
+    start -> identifier[label = "(?!ite)[a-zA-Z]"];
+    start -> ident_i[label = "i"];
+    start -> ident_t[label = "t"];
+    start -> ident_e[label = "e"];
+
+    // whitespace
+    whitespace -> whitespace[label = "\\s"];
+    whitespace[shape = doublecircle];
+
+    // digit
+    digit -> digit[label = "\\d"];
+    digit[shape = doublecircle];
+
+    // op_bracket
+    ident_op_bracket[shape = doublecircle]
+
+    // close_bracket
+    ident_cl_bracket[shape = doublecircle]
+
+    //keyword
+    if
+    ident_i -> keyword_if[label = "f"]
+    keyword_if[shape = doublecircle]
+    ident_i -> identifier[label = "[^f]"]
+
+    //keyword
+    then
+    ident_t -> ident_th[label = "h"]
+    ident_t -> identifier[label = "[^h]"]
+
+    ident_th -> ident_the[label = "e"]
+    ident_th -> identifier[label = "[^e]"]
+
+    ident_the -> keyword_then[label = "n"]
+    keyword_then[shape = doublecircle]
+    ident_the -> identifier[label = "[^n]"]
+
+    //keyword
+    else
+    ident_e -> ident_el[label = "l"]
+    ident_e -> identifier[label = "[^l]"]
+
+    ident_el -> ident_els[label = "s"]
+    ident_el -> identifier[label = "[^s]"]
+
+    ident_els -> keyword_else[label = "e"]
+    keyword_else[shape = doublecircle]
+    ident_els -> identifier[label = "[^e]"]
+
+    //comments
+    ident_com_start -> ident_com_start[label = "[^}]"]
+    ident_com_start -> ident_com_finish[label = "}"]
+    ident_com_finish[shape = doublecircle]
+
+    //identifier
+    identifier -> identifier[label = "[a-zA-Z0-9]"]
+    identifier[shape = doublecircle]
+}
+"""
