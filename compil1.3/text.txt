@@ -1,0 +1,11 @@
+&HA12
+
+adsf 9 safd
+fsdfdf
+fsdfdf
+10 230
+goto
+gosub
+print
+
+&H C
