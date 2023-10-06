@@ -6,8 +6,8 @@ class TokenAnalyzer:
         self.states = states
 
     @staticmethod
-    def is_newline(char):
-        return len(char) > 0 and char[0] == '\n'
+    def is_newline(buffer):
+        return len(buffer) > 0 and buffer[-1] == '\n'
 
     def analyze_tokens(self, code):
         current_state = 'start'
@@ -15,15 +15,21 @@ class TokenAnalyzer:
         current_token_start_pos = (1, 0)
         char = code[0] if code else None
         i = 0
+        j = 0
         tokens = []
+        flag = 0
 
         while char is not None:
             next_state = self.get_next_state(char, current_state)
 
             if next_state is not None:
+                if next_state == 'comment' and char == '\n':
+                    flag += 1
                 current_state = next_state
                 buffer += char
                 i += 1
+                j += 1
+
                 if i < len(code):
                     char = code[i]
                 else:
@@ -33,13 +39,16 @@ class TokenAnalyzer:
                     token = Token(current_token_start_pos, current_state, buffer.strip())
                     tokens.append(token)
 
-                if self.is_newline(char):
-                    current_token_start_pos = (current_token_start_pos[0] + 1, 0)
+                if self.is_newline(buffer):
+                    current_token_start_pos = (current_token_start_pos[0] + flag, 0)
+                    j = 0
+
                 else:
-                    current_token_start_pos = (current_token_start_pos[0], current_token_start_pos[1])
+                    current_token_start_pos = (current_token_start_pos[0], j)
 
                 buffer = ''
                 current_state = 'start'
+
 
         if current_state not in ['whitespace', 'start']:
             token = Token(current_token_start_pos, current_state, buffer.strip())

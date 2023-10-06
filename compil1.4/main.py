@@ -97,9 +97,9 @@ if __name__ == "__main__":
     analyzer = TokenAnalyzer(states)
     tokens = analyzer.analyze_tokens(lines)
 
-    #fixme исправить проблему с координатами
+    
     print('*' * 40)
     for token in tokens:
         print(
-            f"{token.state} ({token.position[0]}.{token.position[1]} - {token.position[0]}.{len(token.value) - token.position[1]}) : {token.value}")
+            f"{token.state} ({token.position[0]}.{token.position[1]} - {token.position[0]}.{len(token.value) + token.position[1]}) : {token.value}")
     print('*' * 40)
