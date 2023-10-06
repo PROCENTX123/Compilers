@@ -17,14 +17,13 @@ class TokenAnalyzer:
         i = 0
         j = 0
         tokens = []
-        flag = 0
+        flag = 1
 
         while char is not None:
             next_state = self.get_next_state(char, current_state)
 
             if next_state is not None:
-                if next_state == 'comment' and char == '\n':
-                    flag += 1
+
                 current_state = next_state
                 buffer += char
                 i += 1

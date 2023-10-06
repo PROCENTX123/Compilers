@@ -97,7 +97,7 @@ if __name__ == "__main__":
     analyzer = TokenAnalyzer(states)
     tokens = analyzer.analyze_tokens(lines)
 
-    
+
     print('*' * 40)
     for token in tokens:
         print(
