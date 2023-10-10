@@ -16,23 +16,24 @@ class LexicalAnalyzer:
     def analyze(self) -> None:
         identifier_table = IdentifierTable()
         for line in self.lines:
+            line = line.lower()
             col = 1
             i = 0
             while i < len(line):
                 #Обработка PRINT
-                if line[i:i + 5] == 'print' and (len(line) == i + 5 or line[i + 5] == ' '):
+                if line[i:i + 5].lower() == 'print' and (len(line) == i + 5 or line[i + 5] == ' '):
                     j = i + 5
                     coords = Coords(Position(self.row, col + i), Position(self.row, j))
                     self.tokens.append(Token(DomainTag.Keyword, coords, 'print'))
                     i = j
                 #Обработка GOSUB
-                elif line[i:i + 5] == 'gosub' and (len(line) == i + 5 or line[i + 5] == ' '):
+                elif line[i:i + 5].lower() == 'gosub' and (len(line) == i + 5 or line[i + 5] == ' '):
                     j = i + 5
                     coords = Coords(Position(self.row, col + i), Position(self.row, j))
                     self.tokens.append(Token(DomainTag.Keyword, coords, 'gosub'))
                     i = j
                 #Обработка GOTO
-                elif line[i:i + 4] == 'goto' and (len(line) == i + 4 or line[i + 4] == ' '):
+                elif line[i:i + 4].lower() == 'goto' and (len(line) == i + 4 or line[i + 4] == ' '):
                     j = i + 4
                     coords = Coords(Position(self.row, col + i), Position(self.row, j))
                     self.tokens.append(Token(DomainTag.Keyword, coords, 'goto'))
@@ -48,7 +49,7 @@ class LexicalAnalyzer:
                         self.tokens.append(
                             Token(DomainTag.Error, Coords(Position(self.row, i + 1), Position(self.row, j))))
                     else:
-                        self.tokens.append(Token(DomainTag.Hex_constant, coords, str(int(line[i + 2:j + 1], base=16))))
+                        self.tokens.append(Token(DomainTag.Constant, coords, str(int(line[i + 2:j + 1], base=16))))
                     i = j
                 #Обработка десятичной константы
                 elif line[i].isnumeric():
@@ -58,13 +59,13 @@ class LexicalAnalyzer:
 
                     coords = Coords(Position(self.row, i + 1), Position(self.row, j + 1))
                     if line[i + 1:j + 1]:
-                        self.tokens.append(Token(DomainTag.Decimal_constant, coords, str(int(line[i:j + 1]))))
+                        self.tokens.append(Token(DomainTag.Constant, coords, str(int(line[i:j]))))
                     else:
                         self.tokens.append(
                             Token(DomainTag.Error, Coords(Position(self.row, i + 1), Position(self.row, j))))
                     i = j + 1
                 #Обработка идентификатора
-                elif line[i].isalpha():
+                elif line[i].lower().isalpha():
                     last_alpha_pos = i
                     j = i + 1
                     while j < len(line) and (line[j].isalnum() or line[j].isalpha() and not line[j].isdigit()):

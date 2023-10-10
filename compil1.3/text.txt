@@ -1,11 +1,18 @@
+PrInTeR
+9PriMe
+
 &HA12
+&Ha12
 
 adsf 9 safd
 fsdfdf
-fsdfdf
+fsdfDF
 10 230
 goto
+GoTO
 gosub
 print
+PrInT
+ printer
 
 &H C
