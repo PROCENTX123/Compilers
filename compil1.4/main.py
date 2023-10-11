@@ -48,8 +48,8 @@ if __name__ == "__main__":
             r'[^f]': 'identifier'
         },
         'ident_if': {
-            r'\s': 'keyword_if',
-            r'[^\sw]': 'identifier'
+            r'[\s]': 'keyword_if',
+            r'[^\sw|(|)|{]': 'identifier'
         },
         'keyword_if': {},
 
@@ -67,7 +67,7 @@ if __name__ == "__main__":
         },
         'ident_else': {
             r'\s': 'keyword_else',
-            r'[^\sw]': 'identifier'
+            r'[^\sw|(|)|{]': 'identifier'
         },
         'keyword_else': {},
 
@@ -85,7 +85,7 @@ if __name__ == "__main__":
         },
         'ident_then': {
             r'\s': 'keyword_then',
-            r'[^\sw]': 'identifier'
+            r'[^\sw|(|)|{]': 'identifier'
         },
         'keyword_then': {},
 

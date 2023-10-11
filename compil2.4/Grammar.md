@@ -7,15 +7,15 @@ T ::= F ( ('*' | '/') F )*;
 F ::= n | '-' F | '(' E ')';
 
 ```
-Grammar -> NTermDecl "terminal" TERM TermList Rule RuleList EOF
-NTermDecl -> "non-terminal" NTERM NTermList | SEMI_COMA
+Grammar -> NTermDecl TermDecl {RuleDecl} EOF
+NTermDecl -> "non-terminal" NTERM NTermList
+TermDecl -> "terminal" TERM TermList
 NTermList -> COMMA NTERM NTermList | SEMI_COMMA
 TermList -> COMMA TERM TermList | SEMI_COMMA
-Rule -> NTERM ASSIGN expr
-RuleList -> Rule RuleList | SEMI_COMMA
-expr -> Altern {ALTERN Altern}
-Altern -> Concat {Concat}
-Concat -> NTERM | TERM | Grouping | Star
+RuleDecl -> NTERM ASSIGN expr SEMI_COMMA
+expr -> Alter {ALTER Alter}
+Alter -> Concat {Concat}
+Concat -> NTERM | TERM | Grouping
 Grouping -> LPAREN Expr RPAREN
 Star -> Grouping*
 ```

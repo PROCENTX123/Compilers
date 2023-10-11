@@ -30,10 +30,11 @@ class TokenType(Enum):
     EOF = auto()
     UNMATCHED = auto()
     COMMA = auto()
-    SEMI_COMMA = auto
+    SEMI_COMMA = auto()
+    EPS = auto()
 
 
-@dataclass
+@dataclass(frozen=True)
 class Token:
     tag: TokenType
     value: str = ""
@@ -44,7 +45,7 @@ class Token:
         else:
             return self.tag.name
 
-@dataclass
+@dataclass(frozen=True)
 class Coords(Token):
     line: int = 0
     start: int = 0
@@ -54,6 +55,7 @@ class Coords(Token):
         if self.tag == TokenType.KW:
             return f"{self.value} ({self.line},{self.start}) - ({self.line}, {self.end})"
         return f"{self.tag.name} ({self.line},{self.start}) - ({self.line}, {self.end}): {self.value}"
+
 
 class Lexer:
     def __init__(self):
@@ -123,10 +125,3 @@ class Lexer:
 
         tokens.append(Coords(TokenType.EOF, "", line_index, inline_index, inline_index))
         return tokens
-
-
-if __name__ == "__main__":
-    lexer = Lexer()
-    tokens = lexer.tokenization(open('input.txt', 'rt').read())
-    for token in tokens:
-        print(token)
