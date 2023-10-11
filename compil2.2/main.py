@@ -200,19 +200,22 @@ NOp |= '-', lambda: '-'
 NOp |= '*', lambda: '*'
 NOp |= '/', lambda: '/'
 
-p = pe.Parser(NProgram)
-p.add_skipped_domain('\\s')        # пробельные символы
-#p.print_table()
-assert p.is_lalr_one()
+if __name__ == "__main__":
+
+    p = pe.Parser(NProgram)
+    p.add_skipped_domain('\\s')
+
+    tree = p.parse(open('test.txt', 'rt', encoding='utf-8').read())
+    pprint(tree)
 
 
 
-for filename in sys.argv[1:]:
-    try:
-        with open(filename) as f:
-            tree = p.parse(f.read())
-            pprint(tree)
-    except pe.Error as e:
-        print(f'Ошибка {e.pos}: {e.message}')
-    except Exception as e:
-        print(e)
+# for filename in sys.argv[1:]:
+#     try:
+#         with open(filename) as f:
+#             tree = p.parse(f.read())
+#             pprint(tree)
+#     except pe.Error as e:
+#         print(f'Ошибка {e.pos}: {e.message}')
+#     except Exception as e:
+#         print(e)
