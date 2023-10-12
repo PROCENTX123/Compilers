@@ -21,7 +21,7 @@ class Parser:
         self.tokens_idx += 1
         return self.tokens[self.tokens_idx]
 
-    # Grammar = NTermDecl TermDecl {RuleDecl} EOF
+    # Grammar = {NTermDecl | TermDecl | RuleDecl} EOF
     def ParseGrammar(self):
         node = {"name": "Grammar", "children": []}
         while self.current_token_tag() != TokenType.EOF:
@@ -48,6 +48,7 @@ class Parser:
             raise ValueError(f"Expected TokenType.NTERM, got {tok.domain_name()}")
         return node
 
+    # NTermList -> COMMA NTERM NTermList | SEMI_COMMA
     def ParseNtermList(self):
         node = {"name": "NtermList", "children": []}
         tok = self.next_token()
@@ -74,18 +75,19 @@ class Parser:
             raise ValueError(f"Expected TokenType.TERM, got {tok.domain_name()}")
         return node
 
+    # TermList -> COMMA TERM TermList | SEMI_COMMA
     def ParseTermList(self):
         node = {"name": "TermList", "children": []}
-        tok = self.next_token()
-        if tok.tag == TokenType.SEMI_COMMA:
+        self.next_token()
+        if self.current_token_tag() == TokenType.SEMI_COMMA:
             self.next_token()
-        elif tok.tag == TokenType.COMMA:
+        elif self.current_token_tag() == TokenType.COMMA:
             tok = self.next_token()
             self.terms.append(tok.value)
             node["children"].append(tok)
             node["children"].append(self.ParseTermList())
         else:
-            raise ValueError(f"Expected TokenType.COMMA, got {tok.domain_name()}")
+            raise ValueError(f"Expected TokenType.COMMA, got {self.current_token().domain_name()}")
         return node
 
     #RuleDecl -> NTERM ASSIGN expr SEMI_COMMA
@@ -101,8 +103,10 @@ class Parser:
                 right = self.ParseExpr()
                 node["children"].append(right)
                 self.rules[left] = right
-                if self.next_token() == TokenType.SEMI_COMMA:
+                if self.current_token_tag() == TokenType.SEMI_COMMA:
                     self.next_token()
+                else:
+                    raise ValueError(f"Expected TokenType.SEMI_COMMA, got {self.current_token().domain_name()}")
             else:
                 raise ValueError(f"Expected TokenType.ASSIGN, got {self.current_token().domain_name()}")
         else:
@@ -123,8 +127,7 @@ class Parser:
     def ParseAlter(self):
         node = {"name": "Alter", "children": []}
         node["children"].append(self.ParseConcat())
-        while self.current_token_tag() == TokenType.NTERM or self.current_token_tag() == TokenType.TERM or \
-        self.current_token_tag() == TokenType.LPAREN:
+        while self.current_token_tag() in (TokenType.NTERM, TokenType.TERM, TokenType.LPAREN):
             node["children"].append(self.ParseConcat())
         return node
 
@@ -150,14 +153,21 @@ class Parser:
             if self.current_token_tag() == TokenType.RPAREN:
                 node["children"].append(self.current_token())
                 self.next_token()
-                if self.current_token_tag() == TokenType.STAR:
-                    node["name"] = "Star"
-                    self.next_token()
+                node["children"].append(self.ParseStar())
+                self.next_token()
             else:
                 raise ValueError(f"Expected TokenType.RPAREN, got {self.current_token().domain_name()}")
         else:
             raise ValueError(f"Expected TokenType.LPAREN, got {self.current_token().domain_name()}")
         return node
+
+    #Star -> Grouping*
+    def ParseStar(self):
+        node = {"name": "Star", "children": []}
+        if self.current_token_tag() == TokenType.STAR:
+            node["children"].append(self.current_token())
+        return node
+
 
     def calculate_first_set(self):
         self.__first = {key: {} for key in self.nterms}

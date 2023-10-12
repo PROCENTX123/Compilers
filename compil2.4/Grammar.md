@@ -7,7 +7,7 @@ T ::= F ( ('*' | '/') F )*;
 F ::= n | '-' F | '(' E ')';
 
 ```
-Grammar -> NTermDecl TermDecl {RuleDecl} EOF
+Grammar -> {NTermDecl | TermDecl | RuleDecl} EOF
 NTermDecl -> "non-terminal" NTERM NTermList
 TermDecl -> "terminal" TERM TermList
 NTermList -> COMMA NTERM NTermList | SEMI_COMMA
