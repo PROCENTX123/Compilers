@@ -67,7 +67,7 @@ statement:
 
 appropriation:
     IDENTIFIER ASSIGN
-    {printTab(env[0],env); printf("%s", $1);env[2]+=strlen($1);checkNewLine(env);printf(" := ");env[2]+=4;checkNewLine(env);}
+    {printTab(env[0], env); printf("%s", $1);env[2]+=strlen($1);checkNewLine(env);printf(" := ");env[2]+=4;checkNewLine(env);}
     expr SEMICOLON
     {printf(";\n");env[2]=0;}
     ;
@@ -96,12 +96,12 @@ variable_declaration:
     ;
 
 variable_list:
-    variable_declaration_line SEMICOLON
-    | variable_list  variable_declaration_line SEMICOLON
+    variable_declaration_line SEMICOLON  {printf(";\n");env[2]=0;}
+    | variable_list  variable_declaration_line SEMICOLON  {printf(";\n");env[2]=0;}
     ;
 
 variable_declaration_line:
-    {printTab(env[0],env);} variables COLON IDENTIFIER {printf(": ");env[2]+=2;checkNewLine(env);printf("%s", $IDENTIFIER);env[2]+=strlen($IDENTIFIER);checkNewLine(env);}{printf(";");env[2]=0;}
+    {printTab(env[0],env);} variables COLON IDENTIFIER {printf(": ");env[2]+=2;checkNewLine(env);printf("%s", $IDENTIFIER);env[2]+=strlen($IDENTIFIER);checkNewLine(env);}
     ;
 
 variables:
@@ -110,7 +110,7 @@ variables:
     ;
 
 compound_statement_begin:
-    {printf("begin");env[0]++;env[2]=0;}
+    {printf("begin\n");env[0]++;env[2]=0;}
     BEGIN_F statement_list END POINT {env[0]--;printf("end.\n");env[2]=0;}
     ;
 %%

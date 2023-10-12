@@ -1,5 +1,1 @@
-var i:integer;
-a,b,c:string;
-begin
-a:='a';b:='b';age:=30;
-end.
+var i:integer;a,b,c:string;begin a:='a';b:='b';age:=30;end.
