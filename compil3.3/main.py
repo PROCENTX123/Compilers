@@ -1,17 +1,10 @@
 import abc
-import enum
 import parser_edsl as pe
-import sys
 import re
-import typing
 from dataclasses import dataclass
-from pprint import pprint
 
-from dataclasses import dataclass
-from typing import List, Union
-from enum import Enum
 
-func = {}  # key = f_name : (in_type, out_type)
+func = {}
 checkVariablesMap = {}
 boolVariable1 = False
 
@@ -557,10 +550,8 @@ if __name__ == "__main__":
     p = pe.Parser(NProgram)
     p.add_skipped_domain('\\s')
     try:
-        # tree = p.parse(open('test.txt', 'rt', encoding='utf-8').read())
-        # tree = p.parse(open('test_red_var.txt', 'rt', encoding='utf-8').read())
-        # tree = p.parse(open('test_incor_type.txt', 'rt', encoding='utf-8').read())
-        tree = p.parse(open('test_red_func.txt', 'rt', encoding='utf-8').read())
+        tree = p.parse(open('test.txt', 'rt', encoding='utf-8').read()) #тут все чисто
+
         tree.check()
         print("Программа корректна")
     except pe.Error as e:

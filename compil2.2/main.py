@@ -1,15 +1,8 @@
 import abc
-import enum
 import parser_edsl as pe
-import sys
 import re
-import typing
-from dataclasses import dataclass
 from pprint import pprint
-
 from dataclasses import dataclass
-from typing import List, Union
-from enum import Enum
 
 class Element(abc.ABC):
     pass
@@ -55,6 +48,12 @@ class ExprElement(abc.ABC):
 class ExprOp():
     op: str
     elem: ExprElement
+
+@dataclass
+class MulExprOp():
+    elem1: ExprElement
+    op: str
+    elem2: ExprElement
 
 @dataclass
 class Expr():
@@ -125,8 +124,8 @@ NTypes, NType, NPatterns, NPattern, NVal, NExpr = \
 NVals, NCons, NExprOp, NExprOps, NConsVal = \
     map(pe.NonTerminal, 'Vals Cons ExprOp ExprOps NConsVal'.split(' '))
 
-NProgram, NElements, NOp, NExprElement = \
-    map(pe.NonTerminal, 'Program Elements Op ExprElement'.split(' '))
+NProgram, NElements, NOp, NExprElement, NArythOp, NMulOp = \
+    map(pe.NonTerminal, 'Program Elements Op ExprElement ArythOp MulOp'.split(' '))
 
 NVarnames, NLCons, NLVal, NLVals, NLConsVal= \
     map(pe.NonTerminal, 'Varnames NLCons NLVal NLVals NLConsVal'.split(' '))
@@ -149,7 +148,7 @@ NType |= '(', NTypes, ')', TypeCortage
 NType |= '*', NType, ScalaList
 
 NTypes |= NType, lambda x: [x]
-NTypes |= NTypes, ',', NType, lambda xs, x:xs+ [x]
+NTypes |= NTypes, ',', NType, lambda xs, x: xs + [x]
 
 NPatterns |= NPattern, lambda x: [x]
 NPatterns |= NPatterns, ';', NPattern, lambda xs, x: xs + [x]
@@ -180,7 +179,7 @@ NVal |= '{', NVals, '}', ValList
 
 NVals |= lambda: []
 NVals |= NConsVal, lambda x: [x]
-NVals |= NVals, ',', NConsVal, lambda xs, x:xs+ [x]
+NVals |= NVals, ',', NConsVal, lambda xs, x : xs + [x]
 
 NConsVal |= NVal, NCons, lambda x, xs: [x] + [(xs)]
 NCons |= lambda: []
@@ -191,14 +190,17 @@ NExpr |= NExprElement, NExprOps, Expr
 NExprOps |= lambda: []
 NExprOps |= NExprOps, NExprOp, lambda xs, x: xs + [x]
 
-NExprOp |= NOp, NExprElement, ExprOp
+NExprOp |= NArythOp, NExprElement, ExprOp
+NArythOp |= '+', lambda: '+'
+NArythOp |= '-', lambda: '-'
+
 
 NExprElement |= NConsVal
+NExprElement |= NExprElement, NMulOp, NExprElement, MulExprOp
+NExprElement |= NExprElement, NMulOp, NExprElement, MulExprOp
+NMulOp |= '*', lambda: '*'
+NMulOp |= '/', lambda: '/'
 
-NOp |= '+', lambda: '+'
-NOp |= '-', lambda: '-'
-NOp |= '*', lambda: '*'
-NOp |= '/', lambda: '/'
 
 if __name__ == "__main__":
 
@@ -208,14 +210,3 @@ if __name__ == "__main__":
     tree = p.parse(open('test.txt', 'rt', encoding='utf-8').read())
     pprint(tree)
 
-
-
-# for filename in sys.argv[1:]:
-#     try:
-#         with open(filename) as f:
-#             tree = p.parse(f.read())
-#             pprint(tree)
-#     except pe.Error as e:
-#         print(f'Ошибка {e.pos}: {e.message}')
-#     except Exception as e:
-#         print(e)
