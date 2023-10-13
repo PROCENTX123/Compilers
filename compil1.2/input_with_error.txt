@@ -1,0 +1,11 @@
+FOR i in range
+1 + 2
+asdfsadf%
+NEXT
+REMasdfsdgsdgasdgsadg
+REM dsafsdfsdsf
+asdfsdf 9 adsfsd
++
+-
+/
+\
