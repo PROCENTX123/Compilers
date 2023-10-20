@@ -6,7 +6,7 @@ end
 
 @ Декартово произведение
 CartProd (*int, *int) :: *(int, int) is
-  (x : xs, ys) = Append (Bind (x, ys), CartProd(xs, ys));
+  (x : x, ys) = Append (Bind (x, ys), CartProd(xs, ys));
   ({}, ys) = {}
 end
 
