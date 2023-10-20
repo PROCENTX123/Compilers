@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lexer.h"
-#include "parser.tab.h"  /* файл генерируется Bison’ом */
+#include "new_parce.tab.h"  /* файл генерируется Bison’ом */
 
 
 #define YY_USER_ACTION \
@@ -41,20 +41,22 @@ void yyerror(YYLTYPE *loc, yyscan_t scanner, long env[26], const char *message) 
 
 %%
 
-[\t ]+
+[\n\t ]+
 var {return VAR;}
 begin {return BEGIN_F;}
-end { return END;}
+end {return END;}
+record {return RECORD;}
+
 [0-9]+ {yylval->number = atoi(yytext);
             return NUMBER;}
+
 := {return ASSIGN;}
+
 [A-Za-z][A-Za-z0-9_]* {yylval->identifier = strdup(yytext);
             return IDENTIFIER;}
+
 \; {return SEMICOLON;}
 \: {return COLON;}
-\. {return POINT;}
-\( {return LBRACKET;}
-\) {return RBRACKET;}
 \, {return COMMA;}
 .
 

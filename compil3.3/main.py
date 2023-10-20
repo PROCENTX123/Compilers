@@ -72,7 +72,6 @@ class Comment(Element):
     value: str
 
     def check(self):
-        # print("comment")
         pass
 
 
@@ -145,7 +144,6 @@ class PriorityVal(Value):
         return PriorityVal(typeVarCoords, vals)
 
     def check(self, example):
-
         self.vals.check(example)
 
     def getType(self):
@@ -260,8 +258,8 @@ class ValList(Value):
         if type(example) != ScalaList:
             raise DifferentSample(self.typeVarCoords, type(self))
 
-        for cur in self.vals:
-            cur.check(example.type)
+        # for cur in self.vals:
+        #     cur.check(example.type)
 
     def getType(self):
         return "ValList"
@@ -471,8 +469,8 @@ NTypes, NType, NPatterns, NPattern, NVal, NExpr = \
 NVals, NCons, NExprOp, NExprOps, NConsVal = \
     map(pe.NonTerminal, 'Vals Cons ExprOp ExprOps NConsVal'.split(' '))
 
-NProgram, NElements, NOp, NExprElement = \
-    map(pe.NonTerminal, 'Program Elements Op ExprElement'.split(' '))
+NProgram, NElements, NOp, NExprElement, NArythOp, NMulOp = \
+    map(pe.NonTerminal, 'Program Elements Op ExprElement ArythOp MulOp'.split(' '))
 
 NVarnames, NLCons, NLVal, NLVals, NLConsVal = \
     map(pe.NonTerminal, 'Varnames NLCons NLVal NLVals NLConsVal'.split(' '))
@@ -516,6 +514,7 @@ NLVals |= lambda: []
 NLVals |= NLConsVal, lambda x: [x]
 NLVals |= NLVals, ',', NLConsVal, lambda xs, x: xs + [x]
 
+NVal |= '(', NExpr, ')', PriorityExpr.create
 NVal |= FUNCNAME, NVal, ValFunc.create
 NVal |= VARNAME, Variable.create
 NVal |= INT, IntValue.create
@@ -533,10 +532,12 @@ NCons |= ':', NVal, NCons, lambda x, xs: [x] + xs
 
 NExpr |= NExprElement, NExprOps, Expr.create
 
+
 NExprOps |= lambda: []
 NExprOps |= NExprOps, NExprOp, lambda xs, x: xs + [x]
 
 NExprOp |= NOp, NExprElement, ExprOp
+
 
 NExprElement |= NConsVal
 

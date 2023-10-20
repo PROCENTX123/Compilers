@@ -1,0 +1,13 @@
+var
+	tpr: Integer;
+	cringe: Integer;
+	a, c, b: string;
+	nameless: record
+		u, w: integer,
+		p, q: real,
+		chbar: integer
+	end;
+	fefewf: record
+		a, f: integer,
+		sd, sw: long
+	end;

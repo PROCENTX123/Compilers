@@ -1963,7 +1963,6 @@ int main(int argc, const char **argv)
             printf("%s", tag_names[tag]);
             print_frag(&coords);
             if(tag == TAG_IDENTIFIER) {
-
                 printf(": %d\n", value.ident);
             }
             else if(tag == TAG_DEFINE) {
@@ -1974,7 +1973,6 @@ int main(int argc, const char **argv)
             }
         };
     } while (0 != tag);
-
 
     return 0;
 }

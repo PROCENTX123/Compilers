@@ -42,3 +42,5 @@ end
 
 @ Вычисление полинома x³+x²+x+1
 Polynom1111 int :: int is x = Polynom (x, {1, 1, 1, 1}) end
+
+F int :: int is x = x * x + x / x - x / x / x end

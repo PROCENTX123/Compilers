@@ -34,8 +34,8 @@
 /* Undocumented macros, especially those whose name start with YY_,
    are private implementation details.  Do not rely on them.  */
 
-#ifndef YY_YY_PARSER_TAB_H_INCLUDED
-# define YY_YY_PARSER_TAB_H_INCLUDED
+#ifndef YY_YY_NEW_PARCE_TAB_H_INCLUDED
+# define YY_YY_NEW_PARCE_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -55,13 +55,11 @@ extern int yydebug;
     ASSIGN = 261,
     SEMICOLON = 262,
     COLON = 263,
-    LBRACKET = 264,
-    RBRACKET = 265,
-    COMMA = 266,
-    POINT = 267,
-    IDENTIFIER = 268,
-    NUMBER = 269,
-    OP = 270
+    COMMA = 264,
+    RECORD = 265,
+    IDENTIFIER = 266,
+    NUMBER = 267,
+    OP = 268
   };
 #endif
 
@@ -69,13 +67,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 14 "parser.y"
+#line 14 "new_parce.y"
 
     char* identifier;
     char variable;
     long number;
 
-#line 79 "parser.tab.h"
+#line 77 "new_parce.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -101,4 +99,4 @@ struct YYLTYPE
 
 int yyparse (yyscan_t scanner, long env[26]);
 
-#endif /* !YY_YY_PARSER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_NEW_PARCE_TAB_H_INCLUDED  */

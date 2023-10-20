@@ -1,6 +1,6 @@
-from python.grammar.structure import GrammarStructure
-from python.syntax.parser import GrammarScanner
-from python.grammar.generator import GrammarGenerator
+from .grammar.structure import GrammarStructure
+from .syntax.parser import GrammarScanner
+from .grammar.generator import GrammarGenerator
 
 
 def main():

@@ -1,4 +1,4 @@
-"""
+```
 digraph G {
     start -> whitespace[label = "\\s"];
     start -> digit[label = "\\d"];
@@ -63,4 +63,4 @@ digraph G {
     identifier -> identifier[label = "[a-zA-Z0-9]"]
     identifier[shape = doublecircle]
 }
-"""
+```

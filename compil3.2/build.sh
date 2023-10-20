@@ -1,3 +1,3 @@
 lex lexer.l
-bison -d parser.y
+bison -d new_parce.y
 gcc *.c

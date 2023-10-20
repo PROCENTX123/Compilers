@@ -1,8 +1,8 @@
 import os
 
-from python.calculator.grammar import GrammarStructure
-from python.calculator.interpreter import ArithmeticInterpreter
-from python.calculator.scanner import ArithmeticScanner
+from .calculator.grammar import GrammarStructure
+from .calculator.interpreter import ArithmeticInterpreter
+from .calculator.scanner import ArithmeticScanner
 
 
 def main():

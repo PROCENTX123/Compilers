@@ -58,7 +58,6 @@ func main() {
 		if format.Node(os.Stdout, fset, file) != nil {
 			fmt.Printf("Formatter error: %v\n", err)
 		}
-		//ast.Fprint(os.Stdout, fset, file, nil)
 	} else {
 		fmt.Printf("Errors in %s\n", os.Args[1])
 	}

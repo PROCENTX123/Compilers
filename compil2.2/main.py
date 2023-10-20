@@ -155,9 +155,9 @@ NPatterns |= NPatterns, ';', NPattern, lambda xs, x: xs + [x]
 
 NPattern |= NLConsVal, '=', NExpr, Pattern
 
-NLConsVal |= NLVal, NLCons, lambda x, xs: [x] + [(xs)]
+NLConsVal |= NLVal, NLCons, lambda x, xs: [x] + xs
 NLCons |= lambda: []
-NLCons |= ':', NLVal, NLCons, lambda x, xs: [x] + [(xs)]
+NLCons |= ':', NLVal, NLCons, lambda x, xs: [x] + xs
 
 
 NLVal |= VARNAME, Variable
@@ -179,11 +179,11 @@ NVal |= '{', NVals, '}', ValList
 
 NVals |= lambda: []
 NVals |= NConsVal, lambda x: [x]
-NVals |= NVals, ',', NConsVal, lambda xs, x : xs + [x]
+NVals |= NVals, ',', NConsVal, lambda xs, x: xs + [x]
 
-NConsVal |= NVal, NCons, lambda x, xs: [x] + [(xs)]
+NConsVal |= NVal, NCons, lambda x, xs: [x] + xs
 NCons |= lambda: []
-NCons |= ':', NVal, NCons, lambda x, xs: [x] + [(xs)]
+NCons |= ':', NVal, NCons, lambda x, xs: [x] + xs
 
 NExpr |= NExprElement, NExprOps, Expr
 
